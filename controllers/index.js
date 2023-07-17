@@ -1,3 +1,5 @@
+const { compare } = require("../helpers/bcrypt");
+const { generateToken } = require("../helpers/jwt");
 const { User } = require("../models");
 module.exports = class UserController {
 	static async register(req, res, next) {
@@ -22,7 +24,29 @@ module.exports = class UserController {
 	}
 	static async login(req, res, next) {
 		try {
-			// placeholder
+			const { email, password } = req.body;
+			if (!email || !password)
+				throw {
+					name: "invalidLogin",
+					err_messages: ["All fields are required"]
+				};
+			const foundData = await User.findOne({ where: { email } });
+			if (!foundData)
+				throw {
+					name: "invalidLogin",
+					err_messages: ["Email not registered"]
+				};
+			if (!compare(password, foundData.password))
+				throw {
+					name: "invalidLogin",
+					err_messages: ["Invalid password"]
+				};
+			res.status(200).json({
+				message: "Login success",
+				access_token: generateToken({
+					id: foundData.id
+				})
+			});
 		} catch (error) {
 			next(error);
 		}
