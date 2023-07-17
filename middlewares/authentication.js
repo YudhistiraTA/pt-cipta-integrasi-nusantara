@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 				err_messages: ["Invalid access_token"]
 			};
 		const user = await User.findByPk(id, {
-			attributes: { exclude: ["password"] }
+			attributes: ["id", "name", "email"]
 		});
 		if (!user)
 			throw {

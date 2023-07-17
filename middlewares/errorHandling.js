@@ -24,6 +24,12 @@ module.exports = (err, req, res, next) => {
 				err_messages: err.err_messages
 			});
 			break;
+		case "JsonWebTokenError":
+			res.status(401).json({
+				message: "Authentication error",
+				err_messages: ["Invalid access_token"]
+			});
+			break;
 		default:
 			console.log(err.name);
 			res.status(500).json({

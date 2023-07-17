@@ -53,7 +53,7 @@ module.exports = class UserController {
 	}
 	static async detail(req, res, next) {
 		try {
-			// placeholder
+			res.status(200).json(req.userData);
 		} catch (error) {
 			next(error);
 		}
