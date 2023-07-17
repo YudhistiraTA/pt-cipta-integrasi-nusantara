@@ -12,6 +12,12 @@ module.exports = (err, req, res, next) => {
 				err_messages: err.errors.map((detail) => detail.message)
 			});
 			break;
+		case "invalidLogin":
+			res.status(400).json({
+				message: "Login error",
+				err_messages: err.err_messages
+			});
+			break;
 		default:
 			console.log(err.name);
 			res.status(500).json({
